@@ -1,0 +1,175 @@
+:root {
+  --neon-red: #ff003c;
+  --neon-blue: #00f2ff;
+  --neon-green: #39ff14;
+  --bg-black: #020203;
+  --panel-border: #1e293b;
+  --glitch-speed: 0.2s;
+}
+
+body {
+  background-color: var(--bg-black);
+  color: #e2e8f0;
+  font-family: 'Courier New', Courier, monospace;
+  margin: 0;
+  overflow: hidden;
+  text-transform: uppercase;
+}
+
+/* 1. Technical Grid & Scanlines */
+body::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: 
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05)),
+    radial-gradient(circle, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+  background-size: 100% 4px, 4px 100%, 40px 40px;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* 2. Layout Framework */
+.dashboard-wrapper {
+  display: grid;
+  grid-template-columns: 350px 1fr 220px; 
+  grid-template-rows: 60px 1fr 40px;
+  height: 100vh;
+  gap: 10px;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.header {
+  grid-column: span 3;
+  border: 1px solid var(--panel-border);
+  border-left: 5px solid var(--neon-red);
+  background: #0a0a0c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+/* 3. Panel Styling with Corner Brackets */
+.sidebar, .main-feed, .right-bar {
+  border: 1px solid var(--panel-border);
+  background: rgba(10, 10, 12, 0.8);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Corner Bracket Decorations */
+.sidebar::after, .main-feed::after, .right-bar::after {
+  content: "";
+  position: absolute;
+  top: 0; right: 0;
+  width: 15px; height: 15px;
+  border-top: 2px solid var(--neon-blue);
+  border-right: 2px solid var(--neon-blue);
+}
+
+/* 4. Meter & Content Styling */
+.meter-label { 
+  font-size: 10px; 
+  color: #475569; 
+  letter-spacing: 2px; 
+  font-weight: bold; 
+}
+
+.meter-value { 
+  font-size: 32px; 
+  font-weight: 900; 
+  margin-bottom: 5px; 
+  color: var(--neon-blue); 
+  text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); 
+}
+
+.meter-bg {
+  height: 8px;
+  background: #000;
+  border: 1px solid #1e293b;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.meter-fill {
+  height: 100%;
+  transition: width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+  box-shadow: 0 0 15px currentColor;
+}
+
+/* 5. Animated Scanning Line */
+.main-feed::before {
+  content: "";
+  position: absolute;
+  top: -100%; left: 0;
+  width: 100%; height: 2px;
+  background: var(--neon-blue);
+  opacity: 0.1;
+  box-shadow: 0 0 20px var(--neon-blue);
+  animation: scan 8s linear infinite;
+  z-index: 5;
+}
+
+@keyframes scan {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+
+/* 6. "Permanent Stain" Glitch Alert */
+.stain-alert {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(-2deg);
+  border: 4px solid var(--neon-red);
+  color: var(--neon-red);
+  padding: 30px;
+  font-size: 3.5rem;
+  font-weight: 900;
+  background: #000;
+  z-index: 200;
+  box-shadow: 0 0 40px rgba(255, 0, 60, 0.6);
+  animation: flicker 0.15s infinite;
+  text-align: center;
+}
+
+@keyframes flicker {
+  0% { opacity: 1; transform: translate(-50%, -50%) skewX(0deg); }
+  50% { opacity: 0.8; transform: translate(-52%, -48%) skewX(2deg); }
+  100% { opacity: 1; transform: translate(-50%, -50%) skewX(-1deg); }
+}
+
+/* 7. Footer Styling */
+.footer {
+  grid-column: span 3;
+  font-size: 9px;
+  color: #334155;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 8. Additional Chart & Radar Support */
+.radar-point { 
+  position: absolute; 
+  width: 5px; 
+  height: 5px; 
+  background: var(--neon-green); 
+  border-radius: 50%; 
+  box-shadow: 0 0 12px var(--neon-green); 
+  animation: blip 2s infinite; 
+}
+
+@keyframes blip { 
+  0%, 100% { opacity: 0; transform: scale(0.5); } 
+  50% { opacity: 1; transform: scale(1.2); } 
+}
+
+@keyframes radar-sweep { 
+  from { transform: rotate(0deg); } 
+  to { transform: rotate(360deg); } 
+}
